@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+var name = "";
 var app = {
     // Application Constructor
     initialize: function() {
@@ -46,6 +47,17 @@ var app = {
 app.initialize();
 
 function login() {
-    var name = document.getElementById('name').value;
-
+    var name = document.getElementById('logininput').value;
+    console.log(document.getElementById('logininput').value);
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        success: function(data){
+            window.open()
+        },
+        error: function(){
+            alert("failed");
+        },
+        url: 'https://europecompetitionbackend.herokuapp.com/api/users/:name'
+    });
 }
