@@ -53,11 +53,11 @@ function login() {
         type: 'GET',
         dataType: 'json',
         success: function(data){
-            window.open()
+            window.location = "challenges.html"
         },
         error: function(){
             alert("failed");
         },
-        url: 'https://europecompetitionbackend.herokuapp.com/api/users/:name'
+        url: 'https://europecompetitionbackend.herokuapp.com/api/users/' + name,
     });
 }
