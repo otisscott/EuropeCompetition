@@ -53,6 +53,7 @@ function login() {
         type: 'GET',
         dataType: 'json',
         success: function(data){
+            console.log("success");
             window.location = "challenges.html"
         },
         error: function(){
