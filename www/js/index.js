@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var name = "";
+var name;
 var app = {
     // Application Constructor
     initialize: function() {
@@ -47,7 +47,7 @@ var app = {
 app.initialize();
 
 function login() {
-    var name = document.getElementById('logininput').value;
+    name = document.getElementById('logininput').value.toLowerCase();
     console.log(document.getElementById('logininput').value);
     $.ajax({
         type: 'GET',
@@ -59,6 +59,90 @@ function login() {
         error: function(){
             alert("failed");
         },
-        url: 'https://europecompetitionbackend.herokuapp.com/api/users/' + name,
+        url: 'https://europecompetitionbackend.herokuapp.com/api/users/' + name
+    });
+}
+
+var allChallenges;
+var completedChallenges;
+
+function getChallenges() {
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        success: function(data){
+            allChallenges = data;
+            getCompletedChallenges();
+        },
+        error: function(){
+            alert("failed");
+        },
+        url: 'https://europecompetitionbackend.herokuapp.com/api/challenges/'
+    });
+}
+
+function getCompletedChallenges() {
+    console.log(allChallenges);
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        success: function(data){
+            completedChallenges = data;
+            populate();
+        },
+        error: function(){
+            alert("failed");
+        },
+        url: 'https://europecompetitionbackend.herokuapp.com/api/' + name
+    });
+}
+
+function populate() {
+    for(var i = 0; i < allChallenges.length; i++) {
+        var multiple;
+        if(allChallenges[i].repeat === 1) {
+            $('tbody')
+                .append('<tr>\n' +
+                    '            <td>' + allChallenges[i].task + '</td>\n' +
+                    '            <td>' + allChallenges[i].points + '</td>\n' +
+                    '            <td><input type="button" onclick="completeChallenge(' + i +')">Complete?</td>\n' +
+                    '        </tr>');
+            multiple = "Yes"
+        } else {
+            var isDone = false;
+            for(var j = 0; j < completedChallenges.length; j++) {
+                if (completedChallenges[j].task === allChallenges[i].task) {
+                    isDone = true;
+                }
+            }
+            if(isDone === false) {
+                $('tbody')
+                    .append('<tr>\n' +
+                        '            <td>' + allChallenges[i].task + '</td>\n' +
+                        '            <td>' + allChallenges[i].points + '</td>\n' +
+                        '            <td><input type="button" onclick="completeChallenge(' + i +')">Complete?</td>\n' +
+                        '        </tr>');
+            }
+            multiple = "No"
+        }
+    }
+}
+
+function completeChallenge(challengeNumber) {
+    $.ajax({
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            "task": allChallenges[challengeNumber].task,
+            "points": allChallenges[challengeNumber].points
+        }),
+        dataType: 'json',
+        success: function(data){
+            runMySuccessFunction(data);
+        },
+        error: function(){
+            alert("failed");
+        },
+        url: 'https://europecompetitionbackend.herokuapp.com/api/' + name
     });
 }
