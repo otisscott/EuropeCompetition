@@ -54,7 +54,7 @@ function login() {
         dataType: 'json',
         success: function(data){
             console.log("success");
-            window.location = "challenges.html"
+            window.location = "../challenges.html"
         },
         error: function(){
             alert("failed");
