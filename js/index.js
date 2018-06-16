@@ -181,5 +181,6 @@ function addPoints() {
     for(var i = 0; i < completedChallenges.length; i++) {
         myPoints += completedChallenges[i].points;
     }
+    $('#points').empty();
     $('#points').append("You have "+ myPoints +" points")
 }
