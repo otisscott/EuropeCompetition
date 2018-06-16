@@ -175,8 +175,9 @@ function singleChecker(challengeNumber) {
         $('#' + challengeNumber.toString()).remove();
     }
 }
-var myPoints = 0;
+
 function addPoints() {
+    var myPoints = 0;
     for(var i = 0; i < completedChallenges.length; i++) {
         myPoints += completedChallenges[i].points;
     }
